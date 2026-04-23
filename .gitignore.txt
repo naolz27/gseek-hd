@@ -1,0 +1,12 @@
+# Sensitive files
+.env
+
+# Dependencies
+node_modules/
+
+# Uploads (temporary files)
+uploads/
+
+# OS files
+.DS_Store
+Thumbs.db

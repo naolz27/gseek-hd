@@ -1,0 +1,164 @@
+================================================================================
+                    SERVER ORDER SYSTEM - QUICK START
+================================================================================
+
+WHAT YOU HAVE
+------------
+A full server package ordering system with Telegram notifications for receiving orders.
+
+SETUP (5 MINUTES)
+----------------
+Step 1: Get Telegram Bot Token
+  - Open Telegram, search @BotFather
+  - Type /newbot and follow instructions
+  - Copy the bot token (e.g., 123456:ABC-DEF1234ghIkl-xyz)
+
+Step 2: Get Your Chat ID
+  - Open Telegram, search @userinfobot
+  - Start the bot, it will display your Chat ID
+  - Copy the numeric ID (e.g., 123456789)
+
+Step 3: Configure the Project
+  - Copy .env.example to .env
+  - Edit .env and add:
+    BOT_TOKEN=your_bot_token_here
+    ADMIN_CHAT_ID=your_chat_id_here
+    PORT=3000
+
+  - Install dependencies:
+    npm install
+
+Step 4: Run & Test
+  - Start the server:
+    npm start
+  - Open: http://localhost:3000
+  - Test placing an order
+
+================================================================================
+
+DEPLOY (MAKE LIVE)
+-----------------
+Railway.app (Recommended):
+  1. Push your code to GitHub
+  2. Go to railway.app and sign in
+  3. Click "New Project" → "Deploy from GitHub repo"
+  4. Select your repository
+  5. Add environment variables in Railway:
+     - BOT_TOKEN (from Step 1)
+     - ADMIN_CHAT_ID (from Step 2)
+     - PORT (default: 3000)
+  6. Click "Deploy"
+
+Push to GitHub:
+  git init
+  git add .
+  git commit -m "Initial commit"
+  git branch -M main
+  git remote add origin https://github.com/yourusername/your-repo.git
+  git push -u main
+
+================================================================================
+
+HOW IT WORKS
+----------
+CUSTOMER Flow:
+  1. Customer opens the order page
+  2. Selects payment receiver (Ethio Telecom, CBE, Dashen, Awash)
+  3. Chooses package (Basic/Pro/Enterprise with prices)
+  4. Enters serial number provided by you
+  5. Fills in name, phone, and uploads Telebirr screenshot
+  6. Submits order → success confirmation shown
+
+YOU Receive (Telegram Message):
+  🛒 New Server Package Order
+
+  *Serial:* `SRV-260420-ET-PRO-XYZ`
+  *Package:* Pro
+  *Amount:* 12000 ETB
+  *Receiver:* Ethio Telecom
+  *Customer:* John Doe
+  *Phone:* +251912345678
+  *Date:* 4/20/2026, 8:00:00 PM
+
+================================================================================
+
+CUSTOMIZATION
+-------------
+Change Package Prices:
+  File: index.html, lines 380-392
+  Edit the data-price values:
+    data-price="5000"     → Basic price
+    data-price="12000"    → Pro price
+    data-price="25000"   → Enterprise price
+
+Change Receivers:
+  File: index.html, lines 362-373
+  Edit option values:
+    data-value="Ethio Telecom"
+    data-value="CBE"
+    data-value="Dashen"
+    data-value="Awash"
+
+Change Serial Format:
+  File: bot.js, lines 46-67 (generateSerial function)
+  - receiverCode: Map receiver names to codes (lines 53-58)
+  - packageCode: Map package names to codes (lines 60-64)
+  - Format pattern: SRV-{YYMMDD}-{receiverCode}-{packageCode}-{random}
+
+Change Colors:
+  File: index.html, lines 15-26
+  Edit CSS variables:
+    --primary: #2563eb       → main color (blue)
+    --primary-dark: #1d4ed8 → darker blue
+    --success: #10b981       → success (green)
+    --error: #ef4444        → error (red)
+
+================================================================================
+
+TROUBLESHOOTING
+---------------
+Bot Not Sending Messages:
+  → Verify BOT_TOKEN is correct in .env
+  → Verify ADMIN_CHAT_ID is correct (must be numeric)
+  → Restart server after .env changes: npm start
+
+Module Error (require not found):
+  → Run: npm install
+  → Make sure node_modules folder exists
+
+Port Already in Use:
+  → Edit .env: PORT=3001 (or another number)
+  → Access at http://localhost:3001
+
+Image Won't Upload:
+  → File must be under 10MB
+  → Allowed formats: JPG, JPEG, PNG, GIF, WEBP
+
+Server Not Starting:
+  → Check node is installed: node --version
+  → Check npm is installed: npm --version
+  → Check all dependencies in package.json
+
+================================================================================
+
+PRO TIPS
+-------
+1. Test locally first: Run npm start and complete a test order
+2. Use Railway for free hosting with automatic deploys
+3. Keep your BOT_TOKEN_SECRET - never commit to GitHub
+4. Add .env to .gitignore before pushing to GitHub
+5. Monitor Railway logs for order notifications
+
+================================================================================
+
+TIME ESTIMATE
+-----------
+Setup: ~5 minutes (get tokens, install, run)
+Customization: ~10 minutes (prices, receivers, colors)
+Deploy: ~5 minutes (Railway setup)
+
+Total: ~20 minutes
+
+================================================================================
+
+You're ready! Check README.md for more details.

@@ -1,0 +1,1602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GSEEK HD - Watch Live Football</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --primary-blue: #0a1628;
+            --secondary-blue: #162d50;
+            --accent-gold: #d4af37;
+            --accent-gold-light: #f0c952;
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --text-muted: #718096;
+            --border-color: #2d3748;
+            --success: #10b981;
+            --error: #ef4444;
+            --card-bg: #131c2e;
+            --card-hover: #1a2740;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: var(--primary-blue);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 1px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
+        }
+        
+        nav {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            margin-top: 12px;
+        }
+        
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.3s, text-shadow 0.3s;
+        }
+        
+        nav a:hover,
+        nav a.active {
+            color: var(--accent-gold);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        /* Progress Bar */
+        .progress-bar {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: var(--card-bg);
+            border-radius: 50px;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+        
+        .progress-step.active {
+            background: linear-gradient(135deg, var(--accent-gold), #b8962e);
+            color: var(--primary-blue);
+            border-color: transparent;
+        }
+        
+        .progress-step.completed {
+            background: var(--success);
+            color: white;
+        }
+        
+        .progress-step .step-num {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        
+        .progress-step.active .step-num {
+            background: var(--primary-blue);
+            color: var(--accent-gold);
+        }
+        
+        .step-content {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        .step-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 5rem 5%;
+            background: url('backg.jpg') center/cover no-repeat;
+            border-radius: 24px;
+            margin-bottom: 40px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(10, 14, 26, 0.35) 0%, rgba(10, 14, 26, 0.55) 100%);
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+        }
+        
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+        }
+        
+        .hero .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(212, 175, 55, 0.2);
+            color: var(--accent-gold);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero .live-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Leagues Section */
+        .leagues-info {
+            text-align: center;
+            padding: 5rem 5%;
+            margin-bottom: 20px;
+        }
+        
+        .leagues-info h2 {
+            font-size: 2.5rem;
+            color: var(--text-secondary);
+            margin-bottom: 24px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        .league-logos {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            text-align: center;
+        }
+        
+        .league-logo-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--card-bg);
+            padding: 16px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            cursor: default;
+        }
+        
+        .league-logo-item .logo-icon {
+            display: none;
+        }
+        
+        .league-icon-img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 12px;
+        }
+        
+        .league-logo-item .logo-text {
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .league-logo-item.epl .logo-icon { background: #38003c; }
+        .league-logo-item.laliga .logo-icon { background: #7a2d7b; }
+        .league-logo-item.seriea .logo-icon { background: #008c45; }
+        .league-logo-item.ucl .logo-icon { background: #012049; }
+        
+        .league-logo-item span {
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+        }
+        
+        /* Packages Section */
+        .package-header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 4rem 5% 0;
+        }
+        
+        .package-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        .package-header p {
+            color: var(--text-secondary);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: var(--card-hover);
+        }
+        
+        .package-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            max-width: 900px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+        
+        .package-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            text-align: center;
+        }
+        
+        .package-card:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-4px);
+        }
+        
+        .package-card.popular {
+            border-color: var(--accent-gold);
+            background: linear-gradient(180deg, rgba(212,175,55,0.05) 0%, var(--card-bg) 100%);
+        }
+        
+        .package-card .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-gold);
+            color: var(--primary-blue);
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .package-card .savings-badge {
+            position: absolute;
+            top: -12px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+        
+        .package-card h3 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        .package-card .duration {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-bottom: 16px;
+        }
+        
+        .package-card .price {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 24px;
+            color: var(--accent-gold);
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        .package-card .price span {
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--text-secondary);
+        }
+        
+        .package-card .features {
+            list-style: none;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .package-card .features li {
+            padding: 8px 0;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .package-card .features li::before {
+            content: '✓';
+            color: var(--accent-gold);
+            font-weight: 700;
+        }
+        
+        .package-card .order-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--accent-gold), #b8962e);
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+        
+        .package-card:hover .order-btn {
+            background: var(--accent-gold-light);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+        }
+        
+        /* Form Container */
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid var(--border-color);
+        }
+        
+        .order-summary {
+            background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.02));
+            border: 1px solid rgba(212,175,55,0.2);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .order-summary h3 {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .order-summary .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .order-summary .summary-row:last-child {
+            border-bottom: none;
+        }
+        
+        .order-summary .summary-row .label {
+            color: var(--text-secondary);
+        }
+        
+        .order-summary .summary-row .value {
+            font-weight: 600;
+            color: var(--accent-gold);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--primary-blue);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent-gold);
+        }
+        
+        .form-group input[readonly] {
+            background: rgba(212, 175, 55, 0.05);
+            border-color: rgba(212, 175, 55, 0.2);
+            color: var(--accent-gold);
+            cursor: not-allowed;
+        }
+        
+        .file-input-wrapper {
+            position: relative;
+        }
+        
+        .file-input-wrapper input[type="file"] {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        
+        .file-input-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 16px 24px;
+            background: var(--primary-blue);
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .file-input-wrapper:hover .file-input-label {
+            border-color: var(--accent-gold);
+        }
+        
+        .file-input-label.selected {
+            border-style: solid;
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.1);
+        }
+        
+        .file-input-label .icon {
+            font-size: 1.5rem;
+        }
+        
+        .file-input-label .text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+        
+        .file-input-label .filename {
+            color: var(--success);
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+        
+        .btn-primary {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--accent-gold), #b8962e);
+            color: var(--primary-blue);
+            border: none;
+            border-radius: 14px;
+            font-size: 1.125rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 24px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.6);
+        }
+        
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Success Page Styles */
+        .success-container {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            position: relative;
+        }
+
+        .success-icon-wrapper {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-gold), #b8962e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 40px rgba(212, 175, 55, 0.5), inset 0 0 20px rgba(255,255,255,0.2);
+            position: relative;
+            z-index: 2;
+            animation: successPop 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .success-icon svg {
+            width: 50px;
+            height: 50px;
+            color: var(--primary-blue);
+        }
+
+        .pulse-ring {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 3px solid var(--accent-gold);
+            opacity: 0;
+            animation: pulseRing 1.5s ease-out infinite;
+        }
+
+        .pulse-ring:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes pulseRing {
+            0% { transform: scale(0.9); opacity: 0.8; }
+            100% { transform: scale(1.3); opacity: 0; }
+        }
+
+        @keyframes successPop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.15); }
+            100% { transform: scale(1); }
+        }
+
+        .success-container h2 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+
+        .success-message {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            backdrop-filter: blur(10px);
+        }
+
+        .success-message p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.75rem;
+            line-height: 1.7;
+        }
+
+        .success-message p:last-child {
+            margin-bottom: 0;
+        }
+
+        .success-message .highlight {
+            color: var(--accent-gold);
+            font-weight: 600;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            border-color: var(--accent-gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+        }
+
+        .contact-item a,
+        .contact-item span {
+            color: var(--text-primary);
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent-gold);
+        }
+
+        .confetti-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-gold);
+            opacity: 0;
+            animation: confettiFall 3s ease-out infinite;
+        }
+
+        .confetti:nth-child(1) { left: 10%; animation-delay: 0s; background: var(--accent-gold); }
+        .confetti:nth-child(2) { left: 20%; animation-delay: 0.5s; background: var(--accent-gold-light); }
+        .confetti:nth-child(3) { left: 30%; animation-delay: 1s; background: var(--accent-gold); }
+        .confetti:nth-child(4) { left: 40%; animation-delay: 1.5s; background: var(--accent-gold-light); }
+        .confetti:nth-child(5) { left: 50%; animation-delay: 2s; background: var(--accent-gold); }
+        .confetti:nth-child(6) { left: 60%; animation-delay: 0.3s; background: var(--accent-gold-light); }
+        .confetti:nth-child(7) { left: 70%; animation-delay: 0.8s; background: var(--accent-gold); }
+        .confetti:nth-child(8) { left: 80%; animation-delay: 1.3s; background: var(--accent-gold-light); }
+        .confetti:nth-child(9) { left: 90%; animation-delay: 1.8s; background: var(--accent-gold); }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(400px) rotate(720deg); opacity: 0; }
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: var(--accent-gold-light);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent-gold);
+            animation: sparkleAnim 2s ease-in-out infinite;
+        }
+
+        .sparkle:nth-child(1) { top: 15%; left: 15%; animation-delay: 0s; }
+        .sparkle:nth-child(2) { top: 25%; right: 12%; animation-delay: 0.5s; }
+        .sparkle:nth-child(3) { bottom: 35%; left: 10%; animation-delay: 1s; }
+        .sparkle:nth-child(4) { bottom: 20%; right: 8%; animation-delay: 1.5s; }
+        .sparkle:nth-child(5) { top: 50%; left: 8%; animation-delay: 2s; }
+        .sparkle:nth-child(6) { top: 60%; right: 15%; animation-delay: 0.7s; }
+
+        @keyframes sparkleAnim {
+            0%, 100% { transform: scale(0.5); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+
+        .success-details {
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .success-details p {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .success-details p:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-icon {
+            flex-shrink: 0;
+            font-size: 1.1rem;
+        }
+
+        .success-details a {
+            color: var(--accent-gold);
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .success-details a:hover {
+            text-decoration: underline;
+        }
+
+        .success-container .btn-secondary {
+            margin-top: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Make success page responsive */
+        @media (max-width: 640px) {
+            .success-container {
+                padding: 2rem 1rem;
+            }
+            .success-icon-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+            .success-icon {
+                width: 80px;
+                height: 80px;
+            }
+            .success-icon svg {
+                width: 40px;
+                height: 40px;
+            }
+            .success-container h2 {
+                font-size: 2rem;
+            }
+            .contact-info {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: center;
+            }
+        }
+        .telebirr-info {
+            margin-top: 20px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1) 0%, rgba(0, 102, 255, 0.05) 100%);
+            border: 2px solid #00d4ff;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+        }
+        
+        .telebirr-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+        
+        .telebirr-icon {
+            font-size: 1.5rem;
+        }
+        
+        .telebirr-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+        
+        .telebirr-details {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
+        }
+        
+        .telebirr-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            padding: 0 10px;
+        }
+        
+        .telebirr-row .label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .telebirr-row .value {
+            color: var(--text-primary);
+            font-weight: 700;
+            color: #00d4ff;
+        }
+        
+        .telebirr-note {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        
+        /* Make it visible on mobile */
+        @media (max-width: 640px) {
+            .telebirr-details {
+                flex-direction: column;
+                gap: 8px;
+            }
+        }
+        
+        /* Success Page */
+        .success-container {
+            text-align: center;
+            padding: 60px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--accent-gold), #b8962e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 32px;
+            font-size: 3rem;
+            color: var(--primary-blue);
+            animation: scaleIn 0.5s ease;
+        }
+        
+        @keyframes scaleIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+        
+        .success-container h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--accent-gold), var(--accent-gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .success-container p {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            margin-bottom: 32px;
+        }
+        
+        .tracking-box {
+            background: var(--card-bg);
+            border: 2px solid var(--accent-gold);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 32px;
+        }
+        
+        .tracking-box label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .tracking-box .tracking-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+            font-family: monospace;
+            letter-spacing: 2px;
+            margin-top: 8px;
+            word-break: break-all;
+        }
+        
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 14px 28px;
+            background: var(--card-bg);
+            color: var(--text-primary);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            border-color: var(--accent-gold);
+            background: var(--card-hover);
+        }
+        
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 0.875rem;
+            display: none;
+        }
+        
+        .error-message.visible {
+            display: block;
+            animation: shake 0.5s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        /* Contact Section */
+        .contact {
+            padding: 4rem 5%;
+            text-align: center;
+            background: var(--card-bg);
+            border-radius: 24px;
+            margin: 2rem 0;
+        }
+        
+        .contact h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+        
+        .contact p {
+            font-size: 1.2rem;
+            margin: 0.5rem 0;
+            color: var(--text-secondary);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+        
+        footer a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin: 0 12px;
+            transition: color 0.3s;
+        }
+        
+        footer a:hover {
+            color: var(--accent-gold);
+        }
+        
+        @media (max-width: 640px) {
+            .app-container {
+                padding: 12px;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 16px;
+            }
+            
+            nav {
+                gap: 16px;
+            }
+            
+            .hero {
+                padding: 40px 16px;
+            }
+            
+            .progress-step {
+                padding: 8px 12px;
+                font-size: 0.75rem;
+            }
+            
+            .progress-step span:not(.step-num) {
+                display: none;
+            }
+            
+            .package-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-container {
+                padding: 24px;
+            }
+            
+            .league-logos {
+                gap: 12px;
+            }
+            
+            .league-logo-item {
+                padding: 12px 16px;
+            }
+            
+            .league-logo-item .logo-text {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="logo">GSEEK HD</div>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#packages">Packages</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </header>
+        
+        <div class="progress-bar">
+            <div class="progress-step active" data-step="1">
+                <span class="step-num">1</span>
+                <span>Select Package</span>
+            </div>
+            <div class="progress-step" data-step="2">
+                <span class="step-num">2</span>
+                <span>Order Details</span>
+            </div>
+            <div class="progress-step" data-step="success">
+                <span class="step-num">✓</span>
+                <span>Complete</span>
+            </div>
+        </div>
+        
+        <div id="errorMessage" class="error-message"></div>
+        
+        <!-- Step 1: Package Selection -->
+        <div class="step-content active" data-step="1">
+            <div class="hero">
+                <div class="live-badge">LIVE</div>
+                <h1>GSEEK HD</h1>
+                <p>ሁሉንም የእግር ኳስ ጨዋታዎች በGSEEK HD በጥራት ይመልከቱ!</p>
+            </div>
+            
+            <div class="leagues-info">
+                <h2>Available Leagues</h2>
+                <div class="league-logos">
+                    <div class="league-logo-item epl">
+                        <img src="ep.jpg" alt="EPL" class="league-icon-img">
+                        <div>
+                            <div class="logo-text">EPL</div>
+                            <span>Premier League</span>
+                        </div>
+                    </div>
+                    <div class="league-logo-item laliga">
+                        <img src="laliga.jpg" alt="LaLiga" class="league-icon-img">
+                        <div>
+                            <div class="logo-text">LaLiga</div>
+                            <span>Spain</span>
+                        </div>
+                    </div>
+                    <div class="league-logo-item seriea">
+                        <img src="seri.jpg" alt="Serie A" class="league-icon-img">
+                        <div>
+                            <div class="logo-text">Serie A</div>
+                            <span>Italy</span>
+                        </div>
+                    </div>
+                    <div class="league-logo-item ucl">
+                        <img src="cham.jpg" alt="Champions League" class="league-icon-img">
+                        <div>
+                            <div class="logo-text">UCL</div>
+                            <span>Champions</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="package-header" id="packages">
+                <h2>Select Your Plan</h2>
+                <p>Choose the perfect package for your viewing needs</p>
+            </div>
+            
+            <div class="package-grid">
+                <div class="package-card" data-package="Basic" data-duration="1 Month" data-price="500" data-code="BASIC">
+                    <h3>የ 1 ወር</h3>
+                    <p class="duration">1 Month - Full Access</p>
+                    <div class="price">500 <span>ETB</span></div>
+                    <button class="order-btn">Order Now</button>
+                </div>
+                
+                <div class="package-card popular" data-package="Premium" data-duration="3 Months" data-price="1200" data-code="PREMIUM">
+                    <span class="popular-badge">Best Value</span>
+                    <span class="savings-badge">Save 300 ETB</span>
+                    <h3>የ 3 ወር</h3>
+                    <p class="duration">3 Months - Full Access</p>
+                    <div class="price">1,200 <span>ETB</span></div>
+                    <button class="order-btn">Order Now</button>
+                </div>
+                
+                <div class="package-card" data-package="Family" data-duration="6 Months" data-price="2400" data-code="FAMILY">
+                    <span class="savings-badge">Save 600 ETB</span>
+                    <h3>የ 6 ወር</h3>
+                    <p class="duration">6 Months - Full Access</p>
+                    <div class="price">2,400 <span>ETB</span></div>
+                    <button class="order-btn">Order Now</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Step 2: Order Form -->
+        <div class="step-content" data-step="2">
+            <button class="back-btn" id="backToPackage">← Back to Packages</button>
+            
+            <div class="form-container">
+                <div class="order-summary">
+                    <h3>Order Summary</h3>
+                    <div class="summary-row">
+                        <span class="label">Package</span>
+                        <span class="value" id="summaryPackage">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">Duration</span>
+                        <span class="value" id="summaryDuration">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">Amount</span>
+                        <span class="value" id="summaryAmount">-</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="label">Access</span>
+                        <span class="value">All Leagues</span>
+                    </div>
+                </div>
+                
+                <form id="orderForm">
+                    <div class="form-group">
+                        <label>Serial Number</label>
+                        <input type="text" id="serial" placeholder="የሪሲቨሩን ሴሪያል ቁትር ያሰገቡ" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Package Name</label>
+                        <input type="text" id="package" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" id="duration" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Amount (ETB)</label>
+                        <input type="text" id="amount" readonly>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Customer Name</label>
+                        <input type="text" id="customerName" placeholder="ሙሉ ስሞትን ያሰገቡ" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" id="phone" placeholder="ስልክ ቁትሮን ያሰገቡ" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Payment Screenshot (Telebirr)</label>
+                        <div class="file-input-wrapper">
+                            <input type="file" id="screenshot" accept="image/*" required>
+                            <label class="file-input-label" for="screenshot" id="fileInputLabel">
+                                <span class="icon">📷</span>
+                                <span class="text" id="fileText">በዚህ ቴሌብር ይከፈሉበትን ስክሪንሻት በዚህ ይላኩ(Click to upload Telebirr payment screenshot)</span>
+                                <span class="filename" id="fileNameDisplay"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="telebirr-info">
+                        <div class="telebirr-header">
+                            <span class="telebirr-icon">💳</span>
+                            <span class="telebirr-title">በዚህ ቴሌ ብር አካውንት ያስገቡ</span>
+                        </div>
+                        <div class="telebirr-details">
+                            <div class="telebirr-row">
+                                <span class="label">ስም:</span>
+                                <span class="value">አላሙዲን አቡዱራዛቅ</span>
+                            </div>
+                            <div class="telebirr-row">
+                                <span class="label">ስልክ ቁትር:</span>
+                                <span class="value">0930923333</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" id="submitBtn" disabled>Submit Order</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Success Page -->
+        <div class="step-content" data-step="success">
+            <div class="success-container">
+                <!-- Decorative Elements -->
+                <div class="confetti-container">
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                </div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+                <div class="sparkle"></div>
+
+                <!-- Animated Success Icon -->
+                <div class="success-icon-wrapper">
+                    <div class="success-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </div>
+                    <div class="pulse-ring"></div>
+                </div>
+
+                <!-- Main Message -->
+                <h2>Order Submitted!</h2>
+                
+                <!-- Thank You Message -->
+                <div class="success-message">
+                    <p>Thank you for your order! will process it right away.</p>
+                </div>
+
+                <!-- Details -->
+                <div class="success-details">
+                    <p><span class="detail-icon">🎫</span> ትዛዞን ትቀብልናል! በ አስር ደቂቃ ካልደረሶት በዚህ ቴሌግራም አካውንት ያናግሩን <a href="https://t.me/servergessek" target="_blank">@servergessek</a> ወይም በዚህ ስልክ ቁትር ይደውሉ +251 930923333</p>
+                    <p><span class="detail-icon">⏱️</span> Your order has been received successfully. We'll process it shortly. If you do not receive your package within ten minutes, contact us on Telegram <a href="https://t.me/servergessek" target="_blank">@servergessek</a> or call us at +251 930923333.</p>
+                </div>
+
+                <!-- Quick Contact Options -->
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span class="contact-icon">📞</span>
+                        <span>+251 930923333</span>
+                    </div>
+                    <div class="contact-item">
+                        <span class="contact-icon">💬</span>
+                        <a href="https://t.me/servergessek" target="_blank">@servergessek</a>
+                    </div>
+                </div>
+
+                <button class="btn-secondary" id="newOrderBtn">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
+                    Place Another Order
+                </button>
+            </div>
+        </div>
+        
+        <section class="contact" id="contact">
+            <h2>Contact Us</h2>
+            <p>📞 +251 930923333</p>
+            <p>📧 <a href="https://t.me/servergessek" target="_blank">@servergessek</a></p>
+            <p>📍 Addis Ababa, Ethiopia</p>
+        </section>
+        
+        <footer id="contact">
+            <p>&copy; 2024 GSEEK HD. All rights reserved.</p>
+            <div style="margin-top: 12px;">
+                <a href="#">Terms of Service</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">Contact Support</a>
+            </div>
+        </footer>
+    </div>
+    
+    <script>
+        const state = {
+            step: 1,
+            package: '',
+            packageDuration: '',
+            amount: 0,
+            file: null
+        };
+        
+        // Navigation active state handling
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+        
+        const elements = {
+            steps: document.querySelectorAll('.progress-step'),
+            stepContents: document.querySelectorAll('.step-content'),
+            errorMessage: document.getElementById('errorMessage'),
+            orderForm: document.getElementById('orderForm'),
+            serial: document.getElementById('serial'),
+            package: document.getElementById('package'),
+            duration: document.getElementById('duration'),
+            amount: document.getElementById('amount'),
+            customerName: document.getElementById('customerName'),
+            phone: document.getElementById('phone'),
+            screenshot: document.getElementById('screenshot'),
+            submitBtn: document.getElementById('submitBtn'),
+            newOrderBtn: document.getElementById('newOrderBtn'),
+            fileInputLabel: document.getElementById('fileInputLabel'),
+            fileText: document.getElementById('fileText'),
+            fileNameDisplay: document.getElementById('fileNameDisplay')
+        };
+        
+        function showStep(step) {
+            state.step = step;
+            
+            elements.steps.forEach(s => {
+                s.classList.remove('active', 'completed');
+                const sNum = s.dataset.step;
+                if (sNum === 'success') {
+                    if (step === 'success') s.classList.add('completed');
+                } else {
+                    const num = parseInt(sNum);
+                    if (num < (step === 'success' ? 3 : step)) s.classList.add('completed');
+                    if (num === step) s.classList.add('active');
+                }
+            });
+            
+            elements.stepContents.forEach(sc => {
+                sc.classList.remove('active');
+                if (String(sc.dataset.step) === String(step)) {
+                    sc.classList.add('active');
+                }
+            });
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function showError(msg) {
+            elements.errorMessage.textContent = msg;
+            elements.errorMessage.classList.add('visible');
+            setTimeout(() => elements.errorMessage.classList.remove('visible'), 5000);
+        }
+        
+        function validateForm() {
+            const serial = elements.serial.value.trim();
+            const customerName = elements.customerName.value.trim();
+            const phone = elements.phone.value.trim();
+            const file = elements.screenshot.files[0];
+            
+            if (serial && customerName && phone && file) {
+                elements.submitBtn.disabled = false;
+            } else {
+                elements.submitBtn.disabled = true;
+            }
+        }
+        
+        document.querySelectorAll('.package-card').forEach(card => {
+            card.addEventListener('click', () => {
+                state.package = card.dataset.package;
+                state.packageDuration = card.dataset.duration;
+                state.amount = card.dataset.price;
+                state.packageCode = card.dataset.code;
+                
+                elements.package.value = state.package;
+                elements.duration.value = state.packageDuration;
+                elements.amount.value = state.amount.toLocaleString() + ' ETB';
+                
+                document.getElementById('summaryPackage').textContent = state.package;
+                document.getElementById('summaryDuration').textContent = state.packageDuration;
+                document.getElementById('summaryAmount').textContent = state.amount.toLocaleString() + ' ETB';
+                
+                showStep(2);
+            });
+        });
+        
+        document.getElementById('backToPackage').addEventListener('click', () => showStep(1));
+        
+        elements.serial.addEventListener('input', validateForm);
+        elements.customerName.addEventListener('input', validateForm);
+        elements.phone.addEventListener('input', validateForm);
+        
+        elements.screenshot.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                state.file = file;
+                elements.fileText.style.display = 'none';
+                elements.fileNameDisplay.textContent = '✓ ' + file.name;
+                elements.fileInputLabel.classList.add('selected');
+            } else {
+                state.file = null;
+                elements.fileText.style.display = 'inline';
+                elements.fileNameDisplay.textContent = '';
+                elements.fileInputLabel.classList.remove('selected');
+            }
+            validateForm();
+        });
+        
+        elements.orderForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const file = elements.screenshot.files[0];
+            if (!file) {
+                showError('Please upload a payment screenshot');
+                return;
+            }
+            
+            const formData = new FormData();
+            formData.append('serial', elements.serial.value.trim());
+            formData.append('package', state.package);
+            formData.append('packageCode', state.package);
+            formData.append('duration', state.packageDuration);
+            formData.append('amount', state.amount);
+            formData.append('customerName', elements.customerName.value.trim());
+            formData.append('phone', elements.phone.value.trim());
+            formData.append('screenshot', file);
+            
+            elements.submitBtn.disabled = true;
+            elements.submitBtn.textContent = 'Submitting...';
+            
+            try {
+                const response = await fetch('/api/order', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showStep('success');
+                } else {
+                    showError(result.message || 'Failed to submit order');
+                    elements.submitBtn.disabled = false;
+                    elements.submitBtn.textContent = 'Submit Order';
+                }
+            } catch (error) {
+                showError('Network error. Please try again.');
+                elements.submitBtn.disabled = false;
+                elements.submitBtn.textContent = 'Submit Order';
+            }
+        });
+        
+        elements.newOrderBtn.addEventListener('click', () => {
+            state.package = '';
+            state.packageDuration = '';
+            state.amount = 0;
+            state.file = null;
+            
+            elements.orderForm.reset();
+            elements.serial.value = '';
+            elements.package.value = '';
+            elements.duration.value = '';
+            elements.amount.value = '';
+            elements.customerName.value = '';
+            elements.phone.value = '';
+            
+            elements.fileText.style.display = 'inline';
+            elements.fileNameDisplay.textContent = '';
+            elements.fileInputLabel.classList.remove('selected');
+            
+            showStep(1);
+        });
+    </script>
+</body>
+</html>
