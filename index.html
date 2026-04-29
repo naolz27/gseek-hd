@@ -2189,9 +2189,24 @@
                      elements.submitBtn.disabled = true;
                      elements.submitBtn.textContent = 'Submit Order';
                      showStep(1);
-                 } else if (href === '#packages') {
-                     showStep(2);
-                  } else if (href === '#contact') {
+                  } else if (href === '#packages') {
+                      showStep(1);
+                      // Then scroll to #packages section
+                      setTimeout(() => {
+                          const packagesEl = document.getElementById('packages');
+                          if (packagesEl) {
+                              packagesEl.scrollIntoView({
+                                  behavior: 'smooth',
+                                  block: 'start'
+                              });
+                              packagesEl.style.transition = 'box-shadow 0.6s ease';
+                              packagesEl.style.boxShadow = '0 0 40px rgba(212, 175, 55, 0.4)';
+                              setTimeout(() => {
+                                  packagesEl.style.boxShadow = 'none';
+                              }, 1000);
+                          }
+                      }, 400);
+                   } else if (href === '#contact') {
                       // Smooth scroll to contact section
                       const contactEl = document.getElementById('contact');
                       if (contactEl) {
