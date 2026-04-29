@@ -2143,12 +2143,93 @@
         };
         
         // Navigation active state handling
-        document.querySelectorAll('nav a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
+        function setActiveNavLink(link) {
+            document.querySelectorAll('nav a').forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        }
+
+        function updateNavFromHash() {
+            const hash = window.location.hash || '#home';
+            document.querySelectorAll('nav a').forEach(link => {
+                if (link.getAttribute('href') === hash) {
+                    setActiveNavLink(link);
+                }
             });
-        });
+        }
+
+         // Set up navigation click handlers
+         document.querySelectorAll('nav a').forEach(link => {
+             link.addEventListener('click', function(e) {
+                 e.preventDefault();
+                 const href = this.getAttribute('href');
+                 const targetId = href.substring(1);
+                 setActiveNavLink(this);
+                 
+                 // Update URL hash
+                 history.pushState(null, null, href);
+                 
+                 // Trigger step-based navigation
+                 if (href === '#') {
+                     // Home - reset state and show step 1
+                     state.package = '';
+                     state.packageDuration = '';
+                     state.amount = 0;
+                     state.file = null;
+                     elements.orderForm.reset();
+                     elements.serial.value = '';
+                     elements.package.value = '';
+                     elements.duration.value = '';
+                     elements.amount.value = '';
+                     elements.customerName.value = '';
+                     elements.phone.value = '';
+                     elements.fileText.style.display = 'inline';
+                     elements.fileNameDisplay.textContent = '';
+                     elements.fileInputLabel.classList.remove('selected');
+                     elements.errorMessage.classList.remove('visible');
+                     elements.submitBtn.disabled = true;
+                     elements.submitBtn.textContent = 'Submit Order';
+                     showStep(1);
+                 } else if (href === '#packages') {
+                     showStep(2);
+                  } else if (href === '#contact') {
+                      // Smooth scroll to contact section
+                      const contactEl = document.getElementById('contact');
+                      if (contactEl) {
+                          contactEl.scrollIntoView({
+                              behavior: 'smooth',
+                              block: 'start'
+                          });
+
+                          // Add visual feedback
+                          contactEl.style.transition = 'box-shadow 0.6s ease';
+                          contactEl.style.boxShadow = '0 0 40px rgba(212, 175, 55, 0.4)';
+                          setTimeout(() => {
+                              contactEl.style.boxShadow = 'none';
+                          }, 1000);
+                      }
+                  } else if (targetId && document.getElementById(targetId)) {
+                     // Fallback: smooth scroll to section
+                     document.getElementById(targetId).scrollIntoView({
+                         behavior: 'smooth',
+                         block: 'start'
+                     });
+                     
+                     // Add visual feedback
+                     const el = document.getElementById(targetId);
+                     el.style.transition = 'box-shadow 0.6s ease';
+                     el.style.boxShadow = '0 0 40px rgba(212, 175, 55, 0.4)';
+                     setTimeout(() => {
+                         el.style.boxShadow = 'none';
+                     }, 1000);
+                 }
+             });
+         });
+
+        // Update active nav link when hash changes (back/forward navigation)
+        window.addEventListener('hashchange', updateNavFromHash);
+
+        // Initialize active nav state on page load
+        document.addEventListener('DOMContentLoaded', updateNavFromHash);
         
         const elements = {
             steps: document.querySelectorAll('.progress-step'),
