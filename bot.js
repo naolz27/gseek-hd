@@ -19,6 +19,7 @@ const upload = multer({
 
 const PORT = process.env.PORT || 3000;
 const app = express();
+app.use(express.static(__dirname));
 
 const BOT_TOKEN = process.env.BOT_TOKEN;
 const ADMIN_CHAT_ID = process.env.ADMIN_CHAT_ID;
